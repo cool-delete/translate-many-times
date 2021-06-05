@@ -10,9 +10,9 @@ const cliProgress = require('cli-progress')
 const minimist = require('minimist')
 
 // 参数默认值
-const DEFAULT_TIME = 20
-const DEFAULT_CONTENT = '今晚月色真美'
-const DEFAULT_LANGS = 'zh-CN,en'
+const DEFAULT_TIME = 5000
+const DEFAULT_CONTENT = '今日も『ホームズ』は、迷える学園生の来訪を密かに待っている―。'
+const DEFAULT_LANGS = 'ja,zh-CN'
 // 解析参数
 // 可以直接在参数里输入字符串指定翻译内容，也可以用 -c 或 -content 指定，默认文本为“今晚月色真美”
 // 此外，也可以通过 -f 或者 --file 指定读取文本文件作为翻译内容
@@ -45,17 +45,19 @@ const langs = (args.l || args.langs || DEFAULT_LANGS)
     const bar = new cliProgress.SingleBar({}, cliProgress.Presets.rect)
     bar.start(time, 0)
     for (let i = 0; i < time; i++) {
-    const slIdx = i % langs.length
-    const tlIdx = slIdx < langs.length - 1 ? slIdx + 1 : 0
-    text = await translate(text, langs[slIdx], langs[tlIdx])
-    // 更新进度条数值
-    bar.update(i + 1)
-  }
-  // 进度条停止
-  bar.stop()
-  console.log(colors.red(`【翻译 ${time} 次后的结果】`))
-  console.log(text)
-})()
+      // const slIdx = i % langs.length
+      // const tlIdx = slIdx < langs.length - 1 ? slIdx + 1 : 0
+      //  text = await translate(text, langs[slIdx], langs[tlIdx])
+      text = await translate(text, langs[0], langs[1])
+      // 更新进度条数值
+      bar.update(i + 1)
+     await sleep(3000)
+    }
+    // 进度条停止
+    bar.stop()
+    console.log(colors.red(`【翻译 ${time} 次后的结果】`))
+    console.log(text)
+  })()
 
 /**
  * 调用谷歌翻译 API 翻译文本
