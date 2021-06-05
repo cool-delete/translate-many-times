@@ -37,14 +37,14 @@ const langs = (args.l || args.langs || DEFAULT_LANGS)
   .split(commonSeparators)
   .filter(v => v)
 
-;(async () => {
-  let text = content
-  console.log(colors.green('【原话】'))
-  console.log(`${text}`)
-  // 初始化进度条
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.rect)
-  bar.start(time, 0)
-  for (let i = 0; i < time; i++) {
+  ; (async () => {
+    let text = content
+    console.log(colors.green('【原话】'))
+    console.log(`${text}`)
+    // 初始化进度条
+    const bar = new cliProgress.SingleBar({}, cliProgress.Presets.rect)
+    bar.start(time, 0)
+    for (let i = 0; i < time; i++) {
     const slIdx = i % langs.length
     const tlIdx = slIdx < langs.length - 1 ? slIdx + 1 : 0
     text = await translate(text, langs[slIdx], langs[tlIdx])
@@ -125,16 +125,16 @@ async function getTK(text, sl, tl) {
       128 > c
         ? (g[d++] = c)
         : (2048 > c
-            ? (g[d++] = (c >> 6) | 192)
-            : (55296 == (c & 64512) &&
-              f + 1 < a.length &&
-              56320 == (a.charCodeAt(f + 1) & 64512)
-                ? ((c =
-                    65536 + ((c & 1023) << 10) + (a.charCodeAt(++f) & 1023)),
-                  (g[d++] = (c >> 18) | 240),
-                  (g[d++] = ((c >> 12) & 63) | 128))
-                : (g[d++] = (c >> 12) | 224),
-              (g[d++] = ((c >> 6) & 63) | 128)),
+          ? (g[d++] = (c >> 6) | 192)
+          : (55296 == (c & 64512) &&
+            f + 1 < a.length &&
+            56320 == (a.charCodeAt(f + 1) & 64512)
+            ? ((c =
+              65536 + ((c & 1023) << 10) + (a.charCodeAt(++f) & 1023)),
+              (g[d++] = (c >> 18) | 240),
+              (g[d++] = ((c >> 12) & 63) | 128))
+            : (g[d++] = (c >> 12) | 224),
+            (g[d++] = ((c >> 6) & 63) | 128)),
           (g[d++] = (c & 63) | 128))
     }
     a = h
