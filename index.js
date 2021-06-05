@@ -69,7 +69,9 @@ async function translate(text, sl, tl) {
   // 需要进行 URL 编码，否则回车符无法保留
   text = encodeURIComponent(text)
   // 获取 API 校验需要的 TK 值
-  const tk = await getTK(text, sl, tl)
+  // const tk = await getTK(text, sl, tl)
+  const tk = await myTK(0)
+  
   // 这里的 dt=t 是指定返回的内容格式，而设定 client=gtx 可以不触发请求频率阈值，否则请求速度过快很容易 403
   const url = `https://translate.google.cn/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&tk=${tk}&q=${text}`
   const res = await got(url)
@@ -95,6 +97,41 @@ async function getTKK(text, sl, tl) {
   return tkk
 }
 
+ async function myTK(a=0) {
+  const RL=function RL(a, b) { 
+    var t = "a"; 
+    var Yb = "+"; 
+    for (var c = 0; c < b.length - 2; c += 3) { 
+        var d = b.charAt(c + 2), 
+        d = d >= t ? d.charCodeAt(0) - 87 : Number(d), 
+        d = b.charAt(c + 1) == Yb ? a >>> d: a << d; 
+        a = b.charAt(c) == Yb ? a + d & 4294967295 : a ^ d 
+    } 
+    return a 
+}
+var k = ""; 
+var b = 406644; 
+var b1 = 3293161072; 
+var jd = "."; 
+var $b = "+-a^+6"; 
+var Zb = "+-3^+b+-f"; 
+for (var e = [], f = 0, g = 0; g < a.length; g++) { 
+    var m = a.charCodeAt(g); 
+    128 > m ? e[f++] = m : (2048 > m ? e[f++] = m >> 6 | 192 : (55296 == (m & 64512) && g + 1 < a.length && 56320 == (a.charCodeAt(g + 1) & 64512) ? (m = 65536 + ((m & 1023) << 10) + (a.charCodeAt(++g) & 1023), 
+    e[f++] = m >> 18 | 240, 
+    e[f++] = m >> 12 & 63 | 128) : e[f++] = m >> 12 | 224, 
+    e[f++] = m >> 6 & 63 | 128), 
+    e[f++] = m & 63 | 128) 
+} 
+a = b; 
+for (f = 0; f < e.length; f++) a += e[f], 
+a = RL(a, $b); 
+a = RL(a, Zb); 
+a ^= b1 || 0; 
+0 > a && (a = (a & 2147483647) + 2147483648); 
+a %= 1E6; 
+return a.toString() + jd + (a ^ b) 
+}
 /**
  * 获取谷歌翻译的 TK 值
  *
@@ -147,3 +184,6 @@ async function getTK(text, sl, tl) {
   }
   return tk(text)
 }
+
+
+  const sleep = time => new Promise(r => setTimeout(r, time));
