@@ -51,7 +51,7 @@ const langs = (args.l || args.langs || DEFAULT_LANGS)
       text = await translate(text, langs[0], langs[1])
       // 更新进度条数值
       bar.update(i + 1)
-     await sleep(3000)
+     await sleep((i+1)%10?5000:60000)
     }
     // 进度条停止
     bar.stop()
